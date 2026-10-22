@@ -1,4 +1,10 @@
-> **This fork: Windows only, ASUS ROG flavored.** The only change from upstream Keyviz v2.1.1: in Icon Only mode, Ctrl and Alt are shown as CTRL / ALT legends traced from the keycaps of my ASUS ROG laptop, and Win shows the Windows logo. Windows builds come from the `Build (Windows)` workflow. Everything else is upstream [mulaRahul/keyviz](https://github.com/mulaRahul/keyviz).
+> **This fork: Windows only, ASUS ROG flavored.** The only change from upstream Keyviz v2.1.1: in Icon Only mode, Ctrl and Alt are shown as CTRL / ALT legends traced from the keycaps of my ASUS ROG laptop, and Win shows the Windows logo. Everything else is upstream [mulaRahul/keyviz](https://github.com/mulaRahul/keyviz).
+>
+> ![CTRL, Win and ALT keycaps in this fork of Keyviz (Icon Only, Low Profile)](docs/asus-rog/option-b.png)
+>
+> ![My real ASUS ROG CTRL and ALT keys next to the Keyviz keycaps](docs/asus-rog/real-keys.png)
+>
+> **Download:** [Windows MSI on the Releases page](https://github.com/dansaround/keyviz/releases/latest) · **Built by:** [Build (Windows) workflow on GitHub Actions](https://github.com/dansaround/keyviz/actions/workflows/build-windows.yml)
 
 # [Keyviz](https://keyviz.org)
 

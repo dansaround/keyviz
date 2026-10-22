@@ -3,10 +3,13 @@ name: Build (Windows)
 # Windows-only build of this fork (ASUS ROG flavored CTRL/ALT legends).
 # Same approach as dansaround/whisperaround: native windows-latest runner,
 # pinned actions, read-only token, installer uploaded as a workflow artifact.
+# Pushing a v* tag also publishes the MSI as a GitHub Release (release job only).
 on:
   push:
     branches:
       - windows-modifiers
+    tags:
+      - "v*"
   workflow_dispatch:
 
 permissions:
@@ -41,3 +44,35 @@ jobs:
           name: keyviz-windows-msi
           path: src-tauri/target/release/bundle/msi/*.msi
           retention-days: 90
+
+  # Only for v* tags: publish the MSI from the build job as a GitHub Release.
+  # The only job with write access; it runs no repo code, just the gh CLI.
+  release:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: keyviz-windows-msi
+          path: msi
+
+      - name: Create or update release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.ref_name }}
+          REPO: ${{ github.repository }}
+        run: |
+          if gh release view "$TAG" -R "$REPO" >/dev/null 2>&1; then
+            if gh release view "$TAG" -R "$REPO" --json assets --jq '.assets[].name' | grep -q '\.msi$'; then
+              echo "Release $TAG already has an MSI; leaving it unchanged."
+            else
+              gh release upload "$TAG" msi/*.msi -R "$REPO"
+            fi
+          else
+            gh release create "$TAG" msi/*.msi -R "$REPO" \
+              --title "Keyviz $TAG - Windows only, ASUS ROG flavored" \
+              --notes "Windows-only build of this fork: CTRL/ALT legends traced from my ASUS ROG laptop keycaps + Windows logo key. Download the .msi below and run it."
+          fi
