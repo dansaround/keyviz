@@ -1,0 +1,43 @@
+name: Build (Windows)
+
+# Windows-only build of this fork (ASUS ROG flavored CTRL/ALT legends).
+# Same approach as dansaround/whisperaround: native windows-latest runner,
+# pinned actions, read-only token, installer uploaded as a workflow artifact.
+on:
+  push:
+    branches:
+      - windows-modifiers
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@b725eda525362e7cf34af9a7243cac1e3f01a7ec # stable
+
+      - name: Install frontend deps
+        run: npm ci
+
+      - name: Build installer (MSI)
+        shell: bash
+        run: npx tauri build --bundles msi
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: keyviz-windows-msi
+          path: src-tauri/target/release/bundle/msi/*.msi
+          retention-days: 90

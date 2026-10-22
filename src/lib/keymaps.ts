@@ -1,6 +1,6 @@
 import { platform } from "@tauri-apps/plugin-os";
-import { MouseLeftClickIcon, MouseMiddleClickIcon, MouseRightClickIcon, MouseRightDragIcon, MouseScrollDownIcon, MouseScrollUpIcon, ReturnIcon } from "@/components/ui/icons";
-import { ArrowBigUpDashIcon, ArrowBigUpIcon, ArrowDownIcon, ArrowDownToLineIcon, ArrowLeftIcon, ArrowLeftRightIcon, ArrowRightIcon, ArrowRightToLineIcon, ArrowUpIcon, ArrowUpToLineIcon, ChevronUpIcon, CircleArrowOutUpLeftIcon, CommandIcon, DeleteIcon, Grid2X2Icon, ImageIcon, LockIcon, LucideIcon, MouseIcon, MoveDownRightIcon, MoveUpLeftIcon, OptionIcon, PauseIcon, SpaceIcon, SparkleIcon, Volume2Icon, VolumeXIcon } from "lucide-react";
+import { AltTextIcon, CtrlTextIcon, MouseLeftClickIcon, MouseMiddleClickIcon, MouseRightClickIcon, MouseRightDragIcon, MouseScrollDownIcon, MouseScrollUpIcon, ReturnIcon, WindowsLogoIcon } from "@/components/ui/icons";
+import { ArrowBigUpDashIcon, ArrowBigUpIcon, ArrowDownIcon, ArrowDownToLineIcon, ArrowLeftIcon, ArrowLeftRightIcon, ArrowRightIcon, ArrowRightToLineIcon, ArrowUpIcon, ArrowUpToLineIcon, ChevronUpIcon, CircleArrowOutUpLeftIcon, CommandIcon, DeleteIcon, ImageIcon, LockIcon, LucideIcon, MouseIcon, MoveDownRightIcon, MoveUpLeftIcon, OptionIcon, PauseIcon, SpaceIcon, SparkleIcon, Volume2Icon, VolumeXIcon } from "lucide-react";
 
 // ───────────── Platform Logic ─────────────
 const currentPlatform = platform();
@@ -448,7 +448,7 @@ export const keymaps: Record<string, DisplayData> = {
         label: "control",
         shortLabel: "ctrl",
         glyph: "⌃",
-        icon: ChevronUpIcon,
+        icon: switchPlatform({ windows: CtrlTextIcon, macos: ChevronUpIcon }),
         category: "modifier",
     };
 });
@@ -459,7 +459,7 @@ export const keymaps: Record<string, DisplayData> = {
         windows: {
             label: "win",
             glyph: "\u229E",
-            icon: Grid2X2Icon,
+            icon: WindowsLogoIcon,
             category: "modifier",
         },
         macos: {
@@ -490,7 +490,7 @@ export const keymaps: Record<string, DisplayData> = {
             macos: "opt",
         }),
         glyph: "⌥",
-        icon: OptionIcon,
+        icon: switchPlatform({ windows: AltTextIcon, macos: OptionIcon }),
         category: "modifier",
     };
 });
